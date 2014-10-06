@@ -2,11 +2,11 @@ package br.juliano.code.challenge.vo;
 
 import java.util.List;
 
-public class RouteVO {
+public class RouteVO { // Graph
 
     private String routeId;
 
-    private int line; // PK
+    private int line;
     private String name;
     private String colour;
     private String stripe;
@@ -15,11 +15,14 @@ public class RouteVO {
     private final List<LineVO> edges;
 
     public RouteVO(List<StationVO> vertexes, List<LineVO> edges) {
+        
         this.vertexes = vertexes;
         this.edges = edges;
+    
     }
 
     public RouteVO(String routeId, int line, String name, String colour, String stripe, List<StationVO> vertexes, List<LineVO> edges) {
+        
         this.routeId = routeId;
         this.line = line;
         this.name = name;
@@ -27,6 +30,7 @@ public class RouteVO {
         this.stripe = stripe;
         this.vertexes = vertexes;
         this.edges = edges;
+    
     }
 
     public String getRouteId() {

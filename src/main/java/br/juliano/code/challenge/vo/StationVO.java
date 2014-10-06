@@ -2,9 +2,9 @@ package br.juliano.code.challenge.vo;
 
 public class StationVO { // Vertex
 
-    private String stationId; // id, PK
-
-    private int id; // PK
+    private String stationId;
+    
+    private int id;
     private double latitude;
     private double longitude;
     private String name;
@@ -17,6 +17,7 @@ public class StationVO { // Vertex
     }
 
     public StationVO(String stationId, int id, double latitude, double longitude, String name, String display_name, int zone, int total_lines, int rail) {
+       
         this.stationId = stationId;
         this.id = id;
         this.latitude = latitude;
@@ -26,6 +27,7 @@ public class StationVO { // Vertex
         this.zone = zone;
         this.total_lines = total_lines;
         this.rail = rail;
+    
     }
 
     public String getStationId() {

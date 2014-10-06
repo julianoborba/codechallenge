@@ -1,26 +1,36 @@
 package br.juliano.code.challenge.vo;
 
+import br.juliano.code.challenge.utils.Utils;
+
 public class LineVO { // Edge
 
     private String lineId;
 
-    private int line; // line FK from Route
-    private StationVO station1; // id FK from Station
-    private StationVO station2; // id FK from Station
+    private RouteVO line;
+    private StationVO station1;
+    private StationVO station2;
 
     public LineVO() {
     }
-    
-    public LineVO(StationVO station1, StationVO station2) {
+
+    public LineVO(StationVO station1,  StationVO station2) {
+        
         this.station1 = station1;
         this.station2 = station2;
+    
     }
-
-    public LineVO(String lineId, int line, StationVO station1, StationVO station2) {
+    
+    public LineVO(String lineId, RouteVO line, StationVO station1,  StationVO station2) {
+        
         this.lineId = lineId;
         this.line = line;
         this.station1 = station1;
         this.station2 = station2;
+    
+    }
+    
+    public double distFrom(double lat1, double lng1, double lat2, double lng2) {
+        return Utils.distFrom(lat1, lng1, lat2, lng2);
     }
 
     public String getLineId() {
@@ -31,11 +41,11 @@ public class LineVO { // Edge
         this.lineId = lineId;
     }
 
-    public int getLine() {
+    public RouteVO getLine() {
         return line;
     }
 
-    public void setLine(int line) {
+    public void setLine(RouteVO line) {
         this.line = line;
     }
 
@@ -65,7 +75,7 @@ public class LineVO { // Edge
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + line;
+        result = prime * result + ((line == null) ? 0 : line.hashCode());
         result = prime * result + ((lineId == null) ? 0 : lineId.hashCode());
         result = prime * result
                 + ((station1 == null) ? 0 : station1.hashCode());
@@ -83,7 +93,10 @@ public class LineVO { // Edge
         if (getClass() != obj.getClass())
             return false;
         LineVO other = (LineVO) obj;
-        if (line != other.line)
+        if (line == null) {
+            if (other.line != null)
+                return false;
+        } else if (!line.equals(other.line))
             return false;
         if (lineId == null) {
             if (other.lineId != null)
