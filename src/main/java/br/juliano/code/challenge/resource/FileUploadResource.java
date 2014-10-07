@@ -1,10 +1,9 @@
 package br.juliano.code.challenge.resource;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -20,56 +19,57 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/upload")
 public class FileUploadResource {
 
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "C://DBfood/";
+	private static final String SERVER_UPLOAD_LOCATION_FOLDER = "/tmp/";
 
-    @POST
-    @Path("/thisDBFood")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+	@POST
+	@Path("/thisDBFood")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadFile(
+			@FormDataParam("file") InputStream fileInputStream,
+			@FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
 
-        String filePath = SERVER_UPLOAD_LOCATION_FOLDER + contentDispositionHeader.getFileName();
-        saveFile(fileInputStream, filePath);
-        String output = "";
+		String filePath = SERVER_UPLOAD_LOCATION_FOLDER + contentDispositionHeader.getFileName();
+		saveFile(fileInputStream, filePath);
 
-        FeedDBService feed = new FeedDBService();
-        boolean nhomnhom = feed.withThisFood(SERVER_UPLOAD_LOCATION_FOLDER);
+		boolean nhomnhom = new FeedDBService().withThisFood(filePath);
 
-        if (nhomnhom) {
-            output = "File saved into : " + filePath + ".";
-            return Response.status(200).entity(output).build();
-        } else {
-            output = "File wasn't consumed. Try again.";
-            deleteFile(filePath);
-            return Response.status(200).entity(output).build();
-        }
+		String output = "";
+		if (nhomnhom) {
+			output = "File saved into : " + filePath + ".";
+		} else {
+			output = "File wasn't consumed. Try again.";
+			deleteFile(filePath);
+		}
 
-    }
+		return Response.status(200).entity(output).build();
+	}
 
-    private void saveFile(InputStream uploadedInputStream, String serverLocation) {
+	private long saveFile(InputStream uploadedInputStream, String serverLocation) {
 
-        try {
+		try {
+			
+			java.nio.file.Path path = Paths.get(serverLocation);
+			return Files.copy(uploadedInputStream, path);
+			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return 0;
+		}
 
-            OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            outpuStream = new FileOutputStream(new File(serverLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1)
-                outpuStream.write(bytes, 0, read);
-            outpuStream.flush();
-            outpuStream.close();
+	}
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+	private boolean deleteFile(String filePath) {
 
-    }
+		try {
+			
+			java.nio.file.Path file = Paths.get(filePath);
+			return Files.deleteIfExists(file);
+			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return false;
+		}
 
-    private boolean deleteFile(String filePath) {
-
-        return new File(filePath).delete();
-
-    }
+	}
 
 }

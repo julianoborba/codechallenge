@@ -20,44 +20,37 @@ public class LondonSubwayResource {
     @Path("/getWayBetween")
     @Produces(MediaType.TEXT_PLAIN)
     public String getWayBetween(@QueryParam("param") final List<String> params) {
-        // Um método que liste um caminho (contendo todas as estações) qualquer entre a estação X e a estação Y
 
         String x = params.get(0);
         String y = params.get(1);
         
         LondonSubwayService service = new LondonSubwayService();
-        
-        return "";
+        return ""; // service.getWayBetween(x, y);
+    
     }
     
     @GET
     @Path("/getShortestWayBetween")
     @Produces(MediaType.TEXT_PLAIN)
     public String getShortestWayBetween(@QueryParam("param") final List<String> params) {
-        // Um método que liste o menor caminho (contendo todas as estações) (considerando a quantidade de paradas como requisito para o menor caminho) entre a estação X e a estação Y
 
         String x = params.get(0);
         String y = params.get(1);
         
         LondonSubwayService service = new LondonSubwayService();
-        
-        timeSpent = "";
-        
-        return "";
+        timeSpent = ""; // service.getTimeSpentIfAny();
+        return ""; // service.getShortestWayBetween(x, y);
+
     }
     
     @GET
     @Path("/getTimeSpent") // from latest getShortestWayBetween
     @Produces(MediaType.TEXT_PLAIN)
     private String timeSpent() {
-        // Um método que calcule o tempo aproximando da viagem no item 2, considerando que ao passar de uma estação adjacente à próxima, o passageiro gaste 3 minutos e ao trocar de linha gaste 12 minutos.
-        
-        LondonSubwayService service = new LondonSubwayService();
         
         return timeSpent;
+
     }
-    
-    // Anotações
     
     //http://traintimes.org.uk/map/tube/
     

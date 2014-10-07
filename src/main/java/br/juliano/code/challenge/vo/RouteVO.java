@@ -11,9 +11,12 @@ public class RouteVO { // Graph
     private String colour;
     private String stripe;
 
-    private final List<StationVO> vertexes;
-    private final List<LineVO> edges;
+    private List<StationVO> vertexes;
+    private List<LineVO> edges;
 
+    public RouteVO() {
+	}
+    
     public RouteVO(List<StationVO> vertexes, List<LineVO> edges) {
         
         this.vertexes = vertexes;

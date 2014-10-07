@@ -14,15 +14,29 @@ public class LondonSubwayService {
 	private LondonSubwayDAO dao = new LondonSubwayDAO();
 	private List<StationVO> nodes;
 	private List<LineVO> edges;
+	private String timeSpent;
 	
 	public String getWayBetween(StationVO x, StationVO y) {
 		
 		nodes = dao.loadAllStations();
 		edges = new ArrayList<LineVO>();
-		
 		return new Gson().toJson("");
 		
 	}
 	
-
+	public String getShortestWayBetween(StationVO x, StationVO y) {
+		
+		nodes = dao.loadAllStations();
+		edges = new ArrayList<LineVO>();
+		timeSpent = "";
+		return new Gson().toJson("");
+		
+	}
+	
+	public String getTimeSpentIfAny() {
+		
+		return timeSpent;
+		
+	}
+	
 }

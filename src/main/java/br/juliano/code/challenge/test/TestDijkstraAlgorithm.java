@@ -25,11 +25,8 @@ public class TestDijkstraAlgorithm {
         nodes = new ArrayList<StationVO>();
         edges = new ArrayList<LineVO>();
         
-        for (int i = 0; i < 11; i++) {
-            StationVO location = new StationVO();
-            nodes.add(location);
-        }
-
+        // TODO
+        
         RouteVO graph = new RouteVO(nodes, edges);
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         dijkstra.execute(nodes.get(0));

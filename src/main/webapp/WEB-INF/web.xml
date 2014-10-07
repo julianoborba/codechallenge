@@ -7,12 +7,12 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>br.juliano.code.challenge</param-value>
+            <param-value>br.juliano.code.challenge.resource</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
-        <url-pattern>/webresources/*</url-pattern>
+        <url-pattern>/londonsubway/*</url-pattern>
     </servlet-mapping>
 </web-app>
