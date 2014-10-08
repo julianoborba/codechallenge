@@ -17,69 +17,64 @@ public class DijkstraAlgorithm {
 
     private final List<StationVO> nodes;
     private final List<LineVO> edges;
-    private Set<StationVO> settledNodes;
-    private Set<StationVO> unSettledNodes;
-    private Map<StationVO, StationVO> predecessors;
-    private Map<StationVO, Integer> distance;
+    private Set<Integer> settledNodes;
+    private Set<Integer> unSettledNodes;
+    private Map<Integer, Integer> predecessors;
+    private Map<Integer, Double> distance;
 
     public DijkstraAlgorithm(RouteVO graph) {
         this.nodes = new ArrayList<StationVO>(graph.getVertexes());
         this.edges = new ArrayList<LineVO>(graph.getEdges());
     }
 
-    public void execute(StationVO source) {
-        settledNodes = new HashSet<StationVO>();
-        unSettledNodes = new HashSet<StationVO>();
-        distance = new HashMap<StationVO, Integer>();
-        predecessors = new HashMap<StationVO, StationVO>();
-        distance.put(source, 0);
+    public void execute(Integer source) {
+        settledNodes = new HashSet<Integer>();
+        unSettledNodes = new HashSet<Integer>();
+        distance = new HashMap<Integer, Double>();
+        predecessors = new HashMap<Integer, Integer>();
+        distance.put(source, new Double(0));
         unSettledNodes.add(source);
         while (unSettledNodes.size() > 0) {
-            StationVO node = getMinimum(unSettledNodes);
+            Integer node = getMinimum(unSettledNodes);
             settledNodes.add(node);
             unSettledNodes.remove(node);
             findMinimalDistances(node);
         }
     }
 
-    private void findMinimalDistances(StationVO node) {
-        List<StationVO> adjacentNodes = getNeighbors(node);
-        for (StationVO target : adjacentNodes) {
-            if (getShortestDistance(target) > getShortestDistance(node)
-                    + getDistance(node, target)) {
-                distance.put(target,
-                        getShortestDistance(node) + getDistance(node, target));
+    private void findMinimalDistances(Integer node) {
+        List<Integer> adjacentNodes = getNeighbors(node);
+        for (Integer target : adjacentNodes) {
+            if (getShortestDistance(target) > getShortestDistance(node) + getDistance(node, target)) {
+                distance.put(target, getShortestDistance(node) + getDistance(node, target));
                 predecessors.put(target, node);
                 unSettledNodes.add(target);
             }
         }
-
     }
 
-    private int getDistance(StationVO node, StationVO target) {
+    private double getDistance(Integer node, Integer target) {
         for (LineVO edge : edges) {
-            if (edge.getStation1().equals(node)
-                    && edge.getStation2().equals(target)) {
-                return (int) edge.distFrom(node.getLatitude(), node.getLongitude(), target.getLatitude(), target.getLongitude());
+            if (edge.getStation1().getId() == node.intValue() && edge.getStation2().getId() == target.intValue()) {
+                return edge.distFrom(edge.getStation1().getLatitude(), edge.getStation1().getLongitude(), edge.getStation2().getLatitude(), edge.getStation2().getLongitude());
             }
         }
         throw new RuntimeException("Should not happen");
     }
 
-    private List<StationVO> getNeighbors(StationVO node) {
-        List<StationVO> neighbors = new ArrayList<StationVO>();
+    private List<Integer> getNeighbors(Integer node) {
+        List<Integer> neighbors = new ArrayList<Integer>();
         for (LineVO edge : edges) {
-            if (edge.getStation1().equals(node)
-                    && !isSettled(edge.getStation2())) {
-                neighbors.add(edge.getStation2());
+            if (edge.getStation1().getId() == node.intValue() && !isSettled(edge.getStation2().getId())) {
+                neighbors.add(edge.getStation2().getId());
             }
         }
         return neighbors;
     }
 
-    private StationVO getMinimum(Set<StationVO> vertexes) {
-        StationVO minimum = null;
-        for (StationVO vertex : vertexes) {
+    private Integer getMinimum(Set<Integer> vertexes) {
+        Integer minimum = null;
+        for (Integer vertex : vertexes) {
             if (minimum == null) {
                 minimum = vertex;
             } else {
@@ -91,22 +86,22 @@ public class DijkstraAlgorithm {
         return minimum;
     }
 
-    private boolean isSettled(StationVO vertex) {
+    private boolean isSettled(Integer vertex) {
         return settledNodes.contains(vertex);
     }
 
-    private int getShortestDistance(StationVO destination) {
-        Integer d = distance.get(destination);
+    private double getShortestDistance(Integer destination) {
+        Double d = distance.get(destination);
         if (d == null) {
-            return Integer.MAX_VALUE;
+            return Double.MAX_VALUE;
         } else {
             return d;
         }
     }
 
-    public LinkedList<StationVO> getPath(StationVO target) {
-        LinkedList<StationVO> path = new LinkedList<StationVO>();
-        StationVO step = target;
+    public LinkedList<Integer> getPath(Integer target) {
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        Integer step = target;
         if (predecessors.get(step) == null) {
             return null;
         }

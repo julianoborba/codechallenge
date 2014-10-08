@@ -1,4 +1,4 @@
-code challenge
+Code challenge
 ==============
 
 Você foi contratado para construir um webservice REST para o metro de Londres. Você recebeu os arquivos em [1] para alimentar o banco de dados desse serviço. 
@@ -22,3 +22,26 @@ Observações:
 Recursos: 
 [1] https://commons.wikimedia.org/wiki/London_Underground_geographic_maps/CSV (para facilitar os arquivos foram inseridos no respositório.) 
 
+
+###Executando###
+
+* Tenha o Git, o Java 7, o Redis e o Maven 3 instalados (o sistema operacional utilizado foi o Fedora 20);
+* Clone este projeto com o Git. Navegue em modo texto (terminal) até a pasta raíz do projeto clonado e execute os comandos mvn clean install e então mvn jetty:run;
+* Em outra janela em modo texto, inicie o Redis, para isso utilize o comando redis-server.
+
+
+###Utilizando###
+
+Para carregar os arquivos acesse a URL:
+- http://localhost:8080/
+
+Para obter...
+
+* Um trajeto qualquer entre uma estação X e outra Y:
+- http://localhost:8080/londonsubway/fromLondonSubway/getWayBetween?param=[id da estação de origem]&param=[id da estação de destino]
+
+* Um trajeto com o menor caminho entre uma estação X e outra Y:
+- http://localhost:8080/londonsubway/fromLondonSubway/getShortestWayBetween?param=[id da estação de origem]&param=[id da estação de destino]
+
+* O tempo gasto no menor caminho entre as estações:
+- http://localhost:8080/londonsubway/fromLondonSubway/getTimeSpent

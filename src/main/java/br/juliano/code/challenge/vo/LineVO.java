@@ -19,7 +19,7 @@ public class LineVO { // Edge
         this.station2 = station2;
     
     }
-    
+
     public LineVO(String lineId, RouteVO line, StationVO station1,  StationVO station2) {
         
         this.lineId = lineId;
@@ -115,5 +115,9 @@ public class LineVO { // Edge
             return false;
         return true;
     }
+
+	public String toRedisString() {
+		return station1.getId() + "," + station2.getId() + "," + line.getLine();
+	}
 
 }

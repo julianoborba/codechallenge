@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import br.juliano.code.challenge.service.LondonSubwayService;
+import br.juliano.code.challenge.vo.StationVO;
 
 @Path("/fromLondonSubway")
 public class LondonSubwayResource {
@@ -23,9 +24,14 @@ public class LondonSubwayResource {
 
         String x = params.get(0);
         String y = params.get(1);
-        
+        StationVO sX = new StationVO();
+        sX.setId(Integer.parseInt(x));
+        StationVO sY = new StationVO();
+        sY.setId(Integer.parseInt(y));
         LondonSubwayService service = new LondonSubwayService();
-        return ""; // service.getWayBetween(x, y);
+        return service.getWayBetween(sX, sY);
+        
+        // TODO corrigir algoritmo pois não funciona em todos os casos
     
     }
     
@@ -41,6 +47,7 @@ public class LondonSubwayResource {
         timeSpent = ""; // service.getTimeSpentIfAny();
         return ""; // service.getShortestWayBetween(x, y);
 
+        // TODO modificar o algoritmo para este menor caminho e persistir o caminho com o tempo gasto
     }
     
     @GET
@@ -49,6 +56,8 @@ public class LondonSubwayResource {
     private String timeSpent() {
         
         return timeSpent;
+        
+        // TODO obter tempo gasto persistido para o identificador do trajeto anterior
 
     }
     

@@ -150,4 +150,8 @@ public class RouteVO { // Graph
         return true;
     }
 
+	public String toRedisString() {
+		return line + "," + name + "," + colour + "," + stripe;
+	}
+
 }

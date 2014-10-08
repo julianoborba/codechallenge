@@ -47,7 +47,7 @@ public class FileUploadResource {
 	private long saveFile(InputStream uploadedInputStream, String serverLocation) {
 
 		try {
-			
+
 			java.nio.file.Path path = Paths.get(serverLocation);
 			return Files.copy(uploadedInputStream, path);
 			
