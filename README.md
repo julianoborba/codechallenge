@@ -32,16 +32,12 @@ Recursos:
 
 ###Utilizando###
 
-Para carregar os arquivos acesse a URL:
-- http://localhost:8080/
+Para carregar os arquivos acesse a URL: http://localhost:8080/.
 
 Para obter...
 
-* Um trajeto qualquer entre uma estação X e outra Y:
-- http://localhost:8080/londonsubway/fromLondonSubway/getWayBetween?param=[id da estação de origem]&param=[id da estação de destino]
+1. Um trajeto qualquer entre uma estação X e outra Y: http://localhost:8080/londonsubway/fromLondonSubway/getWayBetween?param=[id da estação de origem]&param=[id da estação de destino].
 
-* Um trajeto com o menor caminho entre uma estação X e outra Y:
-- http://localhost:8080/londonsubway/fromLondonSubway/getShortestWayBetween?param=[id da estação de origem]&param=[id da estação de destino]
+2. Um trajeto com o menor caminho entre uma estação X e outra Y: http://localhost:8080/londonsubway/fromLondonSubway/getShortestWayBetween?param=[id da estação de origem]&param=[id da estação de destino].
 
-* O tempo gasto no menor caminho entre as estações:
-- http://localhost:8080/londonsubway/fromLondonSubway/getTimeSpent
+3. O tempo gasto no menor caminho entre as estações: http://localhost:8080/londonsubway/fromLondonSubway/getTimeSpent.
