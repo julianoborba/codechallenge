@@ -18,21 +18,31 @@ public class LondonSubwayService {
 	private List<LineVO> edges;
 	private String timeSpent;
 	
-	public String getWayBetween(StationVO x, StationVO y) {
+	public String getWayBetween(int x, int y) {
 		
 		nodes = dao.loadAllStations();
         edges = new ArrayList<LineVO>();
         fillLanes();
         DijkstraAlgorithm dijkstra = setupGraph();
-        LinkedList<Integer> path = findWay(x, y, dijkstra);
-		return new Gson().toJson(path); // TODO trazer mais dados na saída
+        LinkedList<StationVO> path = findWay(getStationById(x), getStationById(y), dijkstra);
+		return new Gson().toJson(path);
 		
 	}
+	
+    private StationVO getStationById(int id) {
+    	
+        for (StationVO stationVO : nodes) {
+			if (stationVO.getId() == id) 
+				return stationVO;
+		}
+        return null;
+        
+    }
 
-	private LinkedList<Integer> findWay(StationVO x, StationVO y, DijkstraAlgorithm dijkstra) {
+	private LinkedList<StationVO> findWay(StationVO x, StationVO y, DijkstraAlgorithm dijkstra) {
 		
-		dijkstra.execute(x.getId());
-        LinkedList<Integer> path = dijkstra.getPath(y.getId());
+		dijkstra.execute(x);
+        LinkedList<StationVO> path = dijkstra.getPath(y);
 		return path;
 		
 	}
@@ -47,32 +57,58 @@ public class LondonSubwayService {
 
 	private void fillLanes() {
 
-		for (LineVO lineVO : dao.loadAllLines()) {
+    	List<RouteVO> routes = dao.loadAllRoutes();
+        nodes = dao.loadAllStations();
+        edges = new ArrayList<LineVO>();
+        for (LineVO lineVO : dao.loadAllLines()) {
+        	
         	StationVO um = null;
         	StationVO dois = null;
+        	RouteVO route = null;
+        	
         	for (StationVO stationVO : nodes) {
-        		if (stationVO.getId() == lineVO.getStation1().getId())
+        		if (stationVO.getId() == lineVO.getStation1().getId()) {
         			um = stationVO;
-        		if (stationVO.getId() == lineVO.getStation2().getId())
+        		}
+        		if (stationVO.getId() == lineVO.getStation2().getId()) {
         			dois = stationVO;
+        		}
         		if (um != null && dois != null) {
-        			addLane(um, dois);
         			break;
         		}
 			}
+
+        	if (um == null) {
+        		um = new StationVO();
+        		um.setId(lineVO.getStation1().getId());
+        	}
+        	
+        	if (dois == null) {
+        		dois = new StationVO();
+        		dois.setId(lineVO.getStation2().getId());
+        	}
+        	
+        	for (RouteVO routeVO : routes) {
+        		if (routeVO.getLine() == lineVO.getLine().getLine()){
+        			route = routeVO;
+        		}
+        	}
+        	
+        	addLane(um, dois, route);
 		}
 		
 	}
 	
-    private void addLane(StationVO sourceLocNo, StationVO destLocNo) {
+    private void addLane(StationVO sourceLocNo, StationVO destLocNo, RouteVO route) {
         
-        LineVO lane = new LineVO(sourceLocNo, destLocNo);
+        LineVO lane = new LineVO(route, sourceLocNo, destLocNo);
         edges.add(lane);
         
     }
 	
 	public String getShortestWayBetween(StationVO x, StationVO y) {
 		
+		// TODO implementar
 		nodes = dao.loadAllStations();
 		edges = new ArrayList<LineVO>();
 		timeSpent = "";
@@ -82,6 +118,7 @@ public class LondonSubwayService {
 	
 	public String getTimeSpentIfAny() {
 		
+		// TODO implementar
 		return timeSpent;
 		
 	}

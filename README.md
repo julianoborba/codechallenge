@@ -41,3 +41,7 @@ Para obter...
 2. Um trajeto com o menor caminho entre uma estação X e outra Y: http://localhost:8080/londonsubway/fromLondonSubway/getShortestWayBetween?param=[id da estação de origem]&param=[id da estação de destino].
 
 3. O tempo gasto no menor caminho entre as estações: http://localhost:8080/londonsubway/fromLondonSubway/getTimeSpent.
+
+###Observações###
+
+O algoritmo do caminho mais curto ainda está incompleto, pois falta considerar a troca de rotas.

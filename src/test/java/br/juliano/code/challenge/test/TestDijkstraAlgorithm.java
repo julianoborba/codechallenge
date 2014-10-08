@@ -27,11 +27,15 @@ public class TestDijkstraAlgorithm {
         
     	LondonSubwayDAO dao = new LondonSubwayDAO();
     	
+    	List<RouteVO> routes = dao.loadAllRoutes();
         nodes = dao.loadAllStations();
         edges = new ArrayList<LineVO>();
         for (LineVO lineVO : dao.loadAllLines()) {
+        	
         	StationVO um = null;
         	StationVO dois = null;
+        	RouteVO route = null;
+        	
         	for (StationVO stationVO : nodes) {
         		if (stationVO.getId() == lineVO.getStation1().getId()) {
         			um = stationVO;
@@ -43,23 +47,31 @@ public class TestDijkstraAlgorithm {
         			break;
         		}
 			}
-        	// Rotina experimental
+
         	if (um == null) {
         		um = new StationVO();
         		um.setId(lineVO.getStation1().getId());
         	}
+        	
         	if (dois == null) {
         		dois = new StationVO();
         		dois.setId(lineVO.getStation2().getId());
         	}
-        	addLane(um, dois);
+        	
+        	for (RouteVO routeVO : routes) {
+        		if (routeVO.getLine() == lineVO.getLine().getLine()){
+        			route = routeVO;
+        		}
+        	}
+        	
+        	addLane(um, dois, route);
 		}
         
         RouteVO graph = new RouteVO(nodes, edges);
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
         
-        dijkstra.execute(133);
-        LinkedList<Integer> path = dijkstra.getPath(146); // 293
+        dijkstra.execute(getStationById(133)); // 133, 107 
+        LinkedList<StationVO> path = dijkstra.getPath(getStationById(236)); // 236, 122
 
         assertNotNull(path);
         assertTrue(path.size() > 0);
@@ -68,10 +80,20 @@ public class TestDijkstraAlgorithm {
 
     }
 
-    private void addLane(StationVO sourceLocNo, StationVO destLocNo) {
+    private void addLane(StationVO sourceLocNo, StationVO destLocNo, RouteVO route) {
         
-        LineVO lane = new LineVO(sourceLocNo, destLocNo);
+        LineVO lane = new LineVO(route, sourceLocNo, destLocNo);
         edges.add(lane);
+        
+    }
+    
+    private StationVO getStationById(int id) {
+    	
+        for (StationVO stationVO : nodes) {
+			if (stationVO.getId() == id) 
+				return stationVO;
+		}
+        return null;
         
     }
     

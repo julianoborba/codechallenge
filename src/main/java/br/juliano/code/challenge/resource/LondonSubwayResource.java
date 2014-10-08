@@ -24,15 +24,9 @@ public class LondonSubwayResource {
 
         String x = params.get(0);
         String y = params.get(1);
-        StationVO sX = new StationVO();
-        sX.setId(Integer.parseInt(x));
-        StationVO sY = new StationVO();
-        sY.setId(Integer.parseInt(y));
         LondonSubwayService service = new LondonSubwayService();
-        return service.getWayBetween(sX, sY);
+        return service.getWayBetween(Integer.parseInt(x), Integer.parseInt(y));
         
-        // TODO corrigir algoritmo pois não funciona em todos os casos
-    
     }
     
     @GET
@@ -71,7 +65,7 @@ public class LondonSubwayResource {
         
         lines
         lineId|"station1"|"station2"|line
-        *     |133       |146         |10
+        *     |133       |146       |10
         
         routes
         routeId |line        |"name"           |"colour"|"stripe"

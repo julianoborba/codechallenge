@@ -29,7 +29,15 @@ public class LineVO { // Edge
     
     }
     
-    public double distFrom(double lat1, double lng1, double lat2, double lng2) {
+    public LineVO(RouteVO line, StationVO station1,  StationVO station2) {
+        
+        this.line = line;
+        this.station1 = station1;
+        this.station2 = station2;
+    
+    }
+
+	public double distFrom(double lat1, double lng1, double lat2, double lng2) {
         return Utils.distFrom(lat1, lng1, lat2, lng2);
     }
 
